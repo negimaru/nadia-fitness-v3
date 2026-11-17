@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 7, 2
+CSS_V, JS_V = 8, 2
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -270,6 +270,7 @@ def page_home():
 <figcaption class="caption"><span><b>Nadia</b> · monitora del estudio</span>{rating()}</figcaption>
 </figure>
 </section>
+<figure class="wrap banner"><img src="assets/img/clase-aire-libre-1.webp" alt="Tres monitoras de espaldas, con los brazos en alto, dirigen una clase de baile al aire libre junto al mar" width="1600" height="500" loading="lazy"></figure>
 
 <section class="sec wrap" aria-labelledby="clases-h">
 <div class="sec-head"><div><h2 id="clases-h">Siete clases, cada una con su grupo y su horario fijo</h2>
@@ -355,6 +356,7 @@ def page_about():
 </div>
 <figure class="hero-photo"><img src="{p}assets/img/monitora-fitdance.webp" alt="Nadia con micrófono antes de una clase" width="840" height="840" fetchpriority="high"></figure>
 </section>
+<figure class="wrap banner"><img src="{p}assets/img/clase-aire-libre-2.webp" alt="Tres monitoras de espaldas, en plena coreografía, dirigen una clase de baile al aire libre junto al mar" width="1600" height="478" loading="lazy"></figure>
 <section class="sec wrap" aria-labelledby="mis-h">
 <div class="sec-head"><h2 id="mis-h">Las siete clases que doy</h2><a class="link" href="{p}clases/">Ver todas las clases{I_ARROW}</a></div>
 <div class="two">{"".join(groups)}</div>
