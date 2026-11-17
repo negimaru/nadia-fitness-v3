@@ -48,6 +48,15 @@
     });
   });
 
+  // Links that open a new tab say so to screen readers
+  Array.prototype.forEach.call(document.querySelectorAll('a[target="_blank"]'), function (link) {
+    if (link.querySelector('.sr-only')) return;
+    var hint = document.createElement('span');
+    hint.className = 'sr-only';
+    hint.textContent = ' (se abre en otra pestaña)';
+    link.appendChild(hint);
+  });
+
   // Footer year
   var year = document.getElementById('year');
   if (year) year.textContent = new Date().getFullYear();

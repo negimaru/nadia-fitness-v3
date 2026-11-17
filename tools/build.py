@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 9, 3
+CSS_V, JS_V = 10, 4
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -175,7 +175,7 @@ def class_media(c, p, eager=False):
         lazy = "" if eager else ' loading="lazy"'
         if c.get("placeholder"):
             # Placeholder image: replace assets/img/{photo} with a real photo of the same name
-            return (f'<img class="media media-placeholder" src="{p}assets/img/{c["photo"]}?v=1" alt="{e(c["photo_alt"])}" '
+            return (f'<img class="media media-placeholder" src="{p}assets/img/{c["photo"]}?v=1" alt="" '
                     f'width="1200" height="750"{lazy}><!-- TODO: real photo → overwrite assets/img/{c["photo"]} -->')
         return (f'<img class="media" src="{p}assets/img/{c["photo"]}" alt="{e(c["photo_alt"])}" '
                 f'width="840" height="840"{lazy}>')
@@ -382,7 +382,7 @@ def page_contact():
 </div>
 <form class="panel form" id="contact-form">
 <h2>{I_MSG}Escríbenos por WhatsApp</h2>
-<div class="field"><label for="contact-name">Nombre</label><input id="contact-name" name="contact-name" autocomplete="name" required placeholder="Tu nombre"></div>
+<div class="field"><label for="contact-name">Nombre</label><input id="contact-name" name="contact-name" autocomplete="name" required placeholder="Tu nombre" aria-describedby="contact-name-error"><p class="field-error" id="contact-name-error" role="alert" hidden>Escribe tu nombre para que sepamos quién eres.</p></div>
 <div class="field"><label for="contact-phone">Teléfono <span class="opt">(opcional)</span></label><input id="contact-phone" name="contact-phone" type="tel" autocomplete="tel" placeholder="+34"></div>
 <div class="field"><label for="contact-class">Clase que te interesa</label><select id="contact-class" name="contact-class">{options}</select></div>
 <div class="field"><label for="contact-message">Mensaje <span class="opt">(opcional)</span></label><textarea id="contact-message" name="contact-message" rows="4" placeholder="Edad, nivel, dudas…"></textarea></div>

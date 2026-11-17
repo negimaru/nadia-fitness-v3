@@ -79,7 +79,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .hero h1, .page-hero h1 { font-size: clamp(38px, 5vw, 62px); line-height: 1.05; max-width: 16ch; }
 .page-hero { padding-top: 64px; }
 .page-hero h1 { max-width: 20ch; }
-.page-hero h1 a { color: var(--accent); text-decoration: none; white-space: nowrap; }
+.page-hero h1 a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; white-space: nowrap; }
 .lead { font-size: 19px; color: var(--muted); max-width: var(--measure); margin-top: 22px; }
 .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; margin-top: 34px; }
 .hero-photo { position: relative; margin: 0 0 28px; }
@@ -166,6 +166,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .week ul { display: grid; gap: 10px; }
 .week li { display: grid; gap: 1px; font-size: 14px; line-height: 1.35; padding-left: 10px; border-left: 3px solid var(--muted); transition: opacity .15s; }
 .week li.g-baile { border-left-color: var(--accent); }
+.week li:not(.g-baile) { border-left-style: dashed; } /* fitness: different shape, not only colour */
 .week time { color: var(--muted); font-size: 13px; }
 .week li span { font-weight: 600; }
 .week.is-filtering li:not(.is-on) { opacity: .25; }
@@ -185,6 +186,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .agenda-list { display: grid; gap: 8px; }
 .agenda-row { display: grid; grid-template-columns: 64px 1fr; gap: 14px; align-items: center; padding: 14px 16px; background: var(--card); border: 1px solid var(--line); border-left: 3px solid var(--muted); border-radius: var(--radius-m); text-decoration: none; }
 .agenda-row.g-baile { border-left-color: var(--accent); }
+.agenda-row:not(.g-baile) { border-left-style: dashed; }
 .agenda-row:hover { color: var(--ink); border-color: var(--ink); }
 .agenda-time { display: grid; justify-items: end; }
 .agenda-time b { font-size: 18px; }
@@ -203,7 +205,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .steps span { color: var(--muted); }
 .band { display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap; }
 .band h2 { display: block; margin: 0; }
-.band h2 a { color: var(--accent); text-decoration: none; white-space: nowrap; }
+.band h2 a { color: var(--accent); text-decoration: underline; text-decoration-thickness: 3px; text-underline-offset: 6px; white-space: nowrap; }
 .band-actions { display: flex; gap: 12px; flex-wrap: wrap; }
 
 /* ---------- Contact ---------- */
@@ -222,6 +224,8 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .form { display: grid; gap: 18px; }
 .field { display: grid; gap: 6px; }
 .field label { font-weight: 600; font-size: 15px; }
+.field-error { margin: 0; font-size: 14px; font-weight: 600; color: var(--accent); }
+.field input[aria-invalid="true"] { border-color: var(--accent); border-width: 2px; }
 .opt { font-weight: 400; color: var(--muted); }
 .field input, .field select, .field textarea { min-height: 46px; padding: 10px 14px; background: var(--bg); color: var(--ink); border: 1px solid var(--line); border-radius: var(--radius-s); font: 400 16px/1.4 var(--font); }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--ink); outline: none; box-shadow: 0 0 0 2px var(--accent); }
@@ -257,6 +261,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .foot-calls li span:first-child { color: var(--ink); }
 .foot-nav { display: grid; gap: 6px; }
 .foot-grid a { text-decoration: none; }
+.foot-grid p a, .foot-legal a { text-decoration: underline; text-decoration-color: var(--muted); } /* links in text must not rely on colour */
 .foot-legal { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 18px; padding-bottom: 28px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
 .mbar { display: none; }
 
@@ -269,7 +274,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 /* ---------- Mobile ---------- */
 @media (max-width: 860px) {
   :root { --gutter: 16px; --section-y: 64px; }
-  html { scroll-padding-top: 76px; }
+  html { scroll-padding-top: 76px; scroll-padding-bottom: calc(84px + env(safe-area-inset-bottom)); }
   .top-in { height: 64px; gap: 12px; }
   .logo img { height: 34px; }
   .menu { display: grid; }
