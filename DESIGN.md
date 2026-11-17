@@ -1,16 +1,26 @@
 # DESIGN.md — Nadia Fitness Dance Studio (v3)
 
-## The decision this page supports
+## The decision the site supports
 
-A parent or an adult in Torrox Costa wants to **pick a class that fits who it is for and when they are free, then call to reserve a place.** Everything on the page serves that, in that order:
+A parent or an adult in Torrox Costa wants to **pick a class that fits who it is for and when they are free, then call to reserve a place.** Every page serves that:
 
-1. Hero: what the studio is, where, when, and the call button. Real photo of Nadia.
-2. Classes: the seven classes, split into Baile and Fitness, each with its days and times.
-3. Week: the full timetable to compare days at a glance (a compact table is right here: comparison is the task).
-4. Nadia: who teaches, plus the real Google rating.
-5. Reserve: phone, call hours, WhatsApp, address and map.
+| Page | Job |
+|---|---|
+| `/` Inicio | Hero (what, where, when + call), the 7 classes, the interactive week, Nadia teaser, 3 steps, reserve band |
+| `/clases/` | One detailed card per class (photo or placeholder, who it is for, times, reserve) |
+| `/horario/` | The interactive week: class filters; on mobile, day tabs that open on today |
+| `/quien-soy/` | Nadia, the real Google rating, the classes she teaches |
+| `/contacto/` | Call hours + call button, address + map, form that opens WhatsApp, 3 steps |
+| `/aviso-legal/`, `/privacidad/` | Legal text (placeholders highlighted with `.ph-mark` until the owner's data arrives) |
 
 A section that does not help that decision does not ship.
+
+## Components
+
+- **Class card**: real photo, or a placeholder with the group icon and the word Baile or Fitness. Never a fake image or a repeat of the class name. Then who it is for (accent), name, description and time chips.
+- **Week**: a table that works without JS. `schedule.js` adds filter buttons (rectangular, radius 4) and, on mobile, day tabs and a list.
+- **Footer**: logo, Instagram, phone/WhatsApp/address, call hours, pages, legal.
+- **Mobile bar**: "Llamar" (the pill) + "WhatsApp" (rectangular).
 
 ## Tokens (use only these)
 
