@@ -77,7 +77,7 @@ def head(p, title, description, path):
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(description)}">
 <meta property="og:image" content="{LIVE}assets/img/og-nadia-fitness.jpg">
-<link rel="icon" href="{p}assets/img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="{p}assets/img/favicon.svg?v=2" type="image/svg+xml">
 <script>try{{var t=localStorage.getItem("nf3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}}catch(e){{}}</script>
 <link rel="preload" href="{p}assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="{p}assets/css/fonts.css?v=1">
