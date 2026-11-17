@@ -6,7 +6,7 @@ Web completa de [Nadia Fitness Dance Studio](https://negimaru.github.io/nadia-fi
 
 - **Títulos con datos:** «22 clases a la semana, de 9:30 a 21:30», «Reserva tu plaza llamando al 654 691 336». No hay etiquetas pequeñas sobre los títulos.
 - **Sistema contenido:** una tipografía (Bricolage Grotesque), neutros cálidos, un único acento rosa y una sola píldora (el botón «Llamar»). Radios de 4, 8 y 16 px e iconos Lucide.
-- **Fotos reales** en las clases que las tienen. El resto lleva un hueco con el icono y «Baile» o «Fitness», sin imágenes falsas.
+- **Fotos:** las clases con foto real la muestran. Las demás llevan una imagen de muestra con el estilo de la web en `assets/img/clases/<clase>.webp`; para poner la foto real, sustituye el archivo por otro con el mismo nombre (horizontal, ~1200×750). `tools/make_placeholders.py` regenera las de muestra.
 - **Horario interactivo:** botones para resaltar una clase. En el móvil, pestañas por día que abren en el de hoy, y se puede deslizar.
 - **Contacto:** formulario que abre WhatsApp con el mensaje escrito (no guarda nada), mapa fijo de OpenStreetMap y 3 pasos.
 - **Modo claro y oscuro** según el sistema, con botón sol/luna. Barra de Llamar/WhatsApp en el móvil. Lleva `noindex`.

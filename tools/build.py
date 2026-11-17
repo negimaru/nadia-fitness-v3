@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 5, 2
+CSS_V, JS_V = 6, 2
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -173,6 +173,10 @@ def class_media(c, p, eager=False):
     """Real photo when we have one; otherwise a typographic placeholder (no fake imagery)."""
     if c.get("photo"):
         lazy = "" if eager else ' loading="lazy"'
+        if c.get("placeholder"):
+            # Placeholder image: replace assets/img/{photo} with a real photo of the same name
+            return (f'<img class="media media-placeholder" src="{p}assets/img/{c["photo"]}?v=1" alt="{e(c["photo_alt"])}" '
+                    f'width="1200" height="750"{lazy}><!-- TODO: real photo → overwrite assets/img/{c["photo"]} -->')
         return (f'<img class="media" src="{p}assets/img/{c["photo"]}" alt="{e(c["photo_alt"])}" '
                 f'width="840" height="840"{lazy}>')
     ico = I_MUSIC if c["group"] == "baile" else I_PULSE

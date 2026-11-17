@@ -110,6 +110,7 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; display: flex; flex-direction: column; scroll-margin-top: 96px; }
 .media { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 28%; }
+.media-placeholder { object-position: 0% 100%; }
 /* Typographic placeholder for classes without a photo: icon + group, no fake imagery */
 .media-ph { display: grid; place-content: center; justify-items: center; gap: 8px; background: var(--bg); border-bottom: 1px solid var(--line); }
 .media-ph .i { width: 36px; height: 36px; color: var(--accent); }
