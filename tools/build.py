@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 8, 2
+CSS_V, JS_V = 9, 3
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -398,14 +398,19 @@ def page_contact():
 ''' + footer(p, ("contact.js",))
 
 
+BACK = '<a class="link back-link" href="../" data-back><span aria-hidden="true">←</span> Volver</a>'
+
+
 def page_legal(slug):
     p = "../"
     L = DATA["legal"][slug]
     return head(p, L["title"], L["lead"], f"{slug}/") + header(p, None) + f'''<main id="main">
+<p class="wrap back">{BACK}</p>
 {page_hero(e(L["h1"]), e(L["lead"]))}
 <section class="sec sec-first wrap prose">
 <!-- TODO: fill in the highlighted placeholders (.ph-mark) with the owner's details -->
 {L["body"]}
+<p class="back back-end">{BACK}</p>
 </section>
 </main>
 ''' + footer(p)
