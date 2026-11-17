@@ -89,6 +89,11 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .rating b { color: var(--ink); }
 .i-star { width: 18px; height: 18px; color: var(--accent); fill: var(--accent); }
 
+/* Wide photo between sections */
+.banner { margin: 0 auto; }
+.banner img { width: 100%; aspect-ratio: 16 / 5; object-fit: cover; object-position: 50% 40%; border-radius: var(--radius-l); }
+@media (max-width: 860px) { .banner img { aspect-ratio: auto; } }
+
 /* ---------- Sections ---------- */
 .sec { padding-top: var(--section-y); }
 .sec-first { padding-top: 48px; }
