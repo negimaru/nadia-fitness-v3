@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 10, 4
+CSS_V, JS_V = 12, 6
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -62,7 +62,7 @@ NAV = [("", "Inicio"), ("clases/", "Clases"), ("horario/", "Horario"), ("quien-s
 
 
 # ---------- Layout ----------
-def head(p, title, description, path):
+def head(p, title, description, path, og="LIVE_OG"):
     return f'''<!doctype html>
 <html lang="es">
 <head>
@@ -76,7 +76,7 @@ def head(p, title, description, path):
 <meta name="theme-color" content="#171412" media="(prefers-color-scheme: dark)">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(description)}">
-<meta property="og:image" content="{LIVE}assets/img/og-nadia-fitness.jpg">
+<meta property="og:image" content="{og if og != 'LIVE_OG' else LIVE + 'assets/img/og-nadia-fitness.jpg'}">
 <link rel="icon" href="{p}assets/img/favicon.svg?v=2" type="image/svg+xml">
 <script>try{{var t=localStorage.getItem("nf3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}}catch(e){{}}</script>
 <link rel="preload" href="{p}assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
@@ -177,7 +177,10 @@ def class_media(c, p, eager=False):
             # Placeholder image: replace assets/img/{photo} with a real photo of the same name
             return (f'<img class="media media-placeholder" src="{p}assets/img/{c["photo"]}?v=1" alt="" '
                     f'width="1200" height="750"{lazy}><!-- TODO: real photo → overwrite assets/img/{c["photo"]} -->')
-        return (f'<img class="media" src="{p}assets/img/{c["photo"]}" alt="{e(c["photo_alt"])}" '
+        small = c["photo"].replace(".webp", "-480.webp")
+        srcset = (f' srcset="{p}assets/img/{small} 480w, {p}assets/img/{c["photo"]} 840w" sizes="(max-width: 860px) 100vw, 33vw"'
+                  if os.path.exists(os.path.join(ROOT, "assets/img", small)) else "")
+        return (f'<img class="media" src="{p}assets/img/{c["photo"]}"{srcset} alt="{e(c["photo_alt"])}" '
                 f'width="840" height="840"{lazy}>')
     ico = I_MUSIC if c["group"] == "baile" else I_PULSE
     label = "Baile" if c["group"] == "baile" else "Fitness"
@@ -242,11 +245,18 @@ def steps():
 '''
 
 
+def call_status():
+    """Empty slot that site.js fills with "¿atendemos llamadas ahora?" from these hours."""
+    hours = html.escape(json.dumps(DATA["calls"], ensure_ascii=False))
+    return f'<p class="call-status" data-call-status data-hours="{hours}"></p>'
+
+
 def reserve_band(p):
     return f'''<section class="sec wrap band" aria-labelledby="band-h">
 <div>
 <h2 id="band-h">Reserva tu plaza llamando al <a href="{PHONE_HREF}">{PHONE}</a></h2>
 <p class="intro">Llamadas de lunes a viernes; consulta el horario de llamadas en el pie. Si prefieres escribir, usa WhatsApp.</p>
+{call_status()}
 </div>
 <div class="band-actions"><a class="btn-primary" href="{PHONE_HREF}">{I_PHONE}Llamar</a><a class="btn" href="{WHATSAPP}" target="_blank" rel="noopener">{I_MSG}WhatsApp</a></div>
 </section>
@@ -266,11 +276,11 @@ def page_home():
 <div class="actions"><a class="btn-primary" href="{PHONE_HREF}">{I_PHONE}Llamar al {PHONE}</a><a class="link" href="horario/">Ver el horario de la semana{I_ARROW}</a></div>
 </div>
 <figure class="hero-photo">
-<img src="assets/img/monitora-fitdance.webp" alt="Nadia, monitora del estudio, con micrófono antes de una clase" width="840" height="840" fetchpriority="high">
+<img src="assets/img/monitora-fitdance.webp" srcset="assets/img/monitora-fitdance-480.webp 480w, assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="Nadia, monitora del estudio, con micrófono antes de una clase" width="840" height="840" fetchpriority="high">
 <figcaption class="caption"><span><b>Nadia</b> · monitora del estudio</span>{rating()}</figcaption>
 </figure>
 </section>
-<figure class="wrap banner"><img src="assets/img/clase-aire-libre-1.webp" alt="Tres monitoras de espaldas, con los brazos en alto, dirigen una clase de baile al aire libre junto al mar" width="1600" height="500" loading="lazy"></figure>
+<figure class="wrap banner"><img src="assets/img/clase-aire-libre-1.webp" srcset="assets/img/clase-aire-libre-1-800.webp 800w, assets/img/clase-aire-libre-1.webp 1600w" sizes="(max-width: 860px) 100vw, 50vw" alt="Tres monitoras de espaldas, con los brazos en alto, dirigen una clase de baile al aire libre junto al mar" width="1600" height="500" loading="lazy"></figure>
 
 <section class="sec wrap" aria-labelledby="clases-h">
 <div class="sec-head"><div><h2 id="clases-h">Siete clases, cada una con su grupo y su horario fijo</h2>
@@ -288,7 +298,7 @@ def page_home():
 
 <section class="sec wrap" aria-labelledby="nadia-h">
 <div class="teaser">
-<img class="avatar" src="assets/img/monitora-fitdance.webp" alt="" width="840" height="840" loading="lazy">
+<img class="avatar" src="assets/img/monitora-fitdance.webp" srcset="assets/img/monitora-fitdance-480.webp 480w, assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="" width="840" height="840" loading="lazy">
 <div><h2 id="nadia-h">Nadia, monitora del estudio</h2>
 <p class="intro">Da clase a todos los grupos: dance por niveles, Fitdance, PowerHIIT y Aquafitness.</p>
 {rating()}</div>
@@ -328,9 +338,12 @@ def page_classes():
 def page_schedule():
     p = "../"
     return head(p, "Horario curso 26/27 · Nadia Fitness Dance Studio, Torrox Costa",
-                "Horario de clases del curso 2026/27 en Nadia Fitness Dance Studio, Torrox Costa: dance por niveles, Fitdance, PowerHIIT y Aquafitness de lunes a viernes.", "horario/") + header(p, "horario/") + f'''<main id="main">
+                "Horario de clases del curso 2026/27 en Nadia Fitness Dance Studio, Torrox Costa: dance por niveles, Fitdance, PowerHIIT y Aquafitness de lunes a viernes.", "horario/", og="https://negimaru.github.io/nadia-fitness-v3/assets/img/og-horario.jpg") + header(p, "horario/") + f'''<main id="main">
 {page_hero(f"{len(SESSIONS)} clases a la semana, de 9:30 a 21:30", "Horario del curso 2026/27, de lunes a viernes. Pulsa una clase para ver solo sus horas. Plazas limitadas por grupo: llámanos para confirmar.")}
-<section class="sec sec-first wrap" aria-label="Horario semanal">
+<section class="sec sec-first wrap" aria-labelledby="week-h">
+<h2 id="week-h" class="sr-only">Horario semanal</h2>
+<p class="print-only">Nadia Fitness Dance Studio · {ADDRESS_1}, {ADDRESS_2} · Tel. {PHONE}</p>
+<p class="print-row"><button type="button" class="btn print-btn" data-print>Imprimir horario</button></p>
 {schedule(p)}
 </section>
 {reserve_band(p)}</main>
@@ -354,9 +367,9 @@ def page_about():
 <p class="lead">En mis clases cada persona avanza a su ritmo: técnica, coreografía y entrenamiento en serio, en buen ambiente. Si nunca has bailado, te ayudo a encontrar tu grupo.</p>
 <div class="actions">{rating()}</div>
 </div>
-<figure class="hero-photo"><img src="{p}assets/img/monitora-fitdance.webp" alt="Nadia con micrófono antes de una clase" width="840" height="840" fetchpriority="high"></figure>
+<figure class="hero-photo"><img src="{p}assets/img/monitora-fitdance.webp" srcset="{p}assets/img/monitora-fitdance-480.webp 480w, {p}assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="Nadia con micrófono antes de una clase" width="840" height="840" fetchpriority="high"></figure>
 </section>
-<figure class="wrap banner"><img src="{p}assets/img/clase-aire-libre-2.webp" alt="Tres monitoras de espaldas, en plena coreografía, dirigen una clase de baile al aire libre junto al mar" width="1600" height="478" loading="lazy"></figure>
+<figure class="wrap banner"><img src="{p}assets/img/clase-aire-libre-2.webp" srcset="{p}assets/img/clase-aire-libre-2-800.webp 800w, {p}assets/img/clase-aire-libre-2.webp 1600w" sizes="(max-width: 860px) 100vw, 50vw" alt="Tres monitoras de espaldas, en plena coreografía, dirigen una clase de baile al aire libre junto al mar" width="1600" height="478" loading="lazy"></figure>
 <section class="sec wrap" aria-labelledby="mis-h">
 <div class="sec-head"><h2 id="mis-h">Las siete clases que doy</h2><a class="link" href="{p}clases/">Ver todas las clases{I_ARROW}</a></div>
 <div class="two">{"".join(groups)}</div>
@@ -375,6 +388,7 @@ def page_contact():
 <section class="sec sec-first wrap contact" aria-label="Formas de contacto">
 <div class="contact-side">
 <div class="panel"><h2>{I_CLOCK}Horario de llamadas</h2><table class="calls">{calls}</table>
+{call_status()}
 <a class="btn-primary" href="{PHONE_HREF}">{I_PHONE}Llamar al {PHONE}</a></div>
 <div class="panel"><h2>{I_PIN}{ADDRESS_1}</h2><p class="muted">{ADDRESS_2}</p>
 <a class="map" href="{MAPS}" target="_blank" rel="noopener"><img src="{p}assets/img/mapa.webp" alt="Mapa de Urb. Santa Rosa con la academia en la Calle Margarita" width="1280" height="720" loading="lazy"><span class="pin" aria-hidden="true"></span><span class="map-go">Cómo llegar</span></a>
@@ -421,7 +435,14 @@ def page_404():
     return head("", "Página no encontrada · Nadia Fitness Dance Studio", "Esta página no existe.", "").replace(
         'href="assets/', 'href="/nadia-fitness-v3/assets/').replace('src="assets/', 'src="/nadia-fitness-v3/assets/') + header("/nadia-fitness-v3/", None) + f'''<main id="main">
 {page_hero("Esta página no existe", "Puede que el enlace esté mal o que la página se haya movido.")}
-<section class="sec sec-first wrap"><a class="btn-primary" href="/nadia-fitness-v3/">Ir al inicio</a></section>
+<section class="sec sec-first wrap"><div class="two">
+<div class="panel"><h2>Lo más buscado</h2><ul class="plain">
+<li><a href="/nadia-fitness-v3/horario/">Horario de clases</a><span>Qué hay cada día</span></li>
+<li><a href="/nadia-fitness-v3/clases/">Clases</a><span>Para quién es cada una</span></li>
+<li><a href="/nadia-fitness-v3/contacto/">Contacto</a><span>Teléfono, WhatsApp y mapa</span></li>
+</ul></div>
+<div class="panel"><h2>¿Prefieres llamar?</h2><p class="muted">Te decimos si queda plaza en el grupo.</p><p><a class="btn-primary" href="{PHONE_HREF}">{I_PHONE}Llamar al {PHONE}</a></p></div>
+</div></section>
 </main>
 ''' + footer("/nadia-fitness-v3/")
 

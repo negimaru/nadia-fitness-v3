@@ -232,6 +232,30 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 .field textarea { resize: vertical; }
 .form .btn { justify-self: start; }
 
+/* ---------- Call status ---------- */
+.call-status { display: flex; align-items: center; gap: 8px; margin-top: 14px; font-size: 15px; font-weight: 600; color: var(--muted); }
+.call-status:empty { display: none; }
+.call-status::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--muted); flex: none; }
+.call-status.is-open { color: var(--ink); }
+.call-status.is-open::before { background: #2F8F4E; }
+
+/* ---------- Print: the timetable on one A4 sheet ---------- */
+.print-btn, .print-only { display: none; }
+.print-row { margin: 0 0 16px; }
+@media print {
+  @page { size: A4 landscape; margin: 12mm; }
+  html, body { background: #fff !important; color: #000 !important; }
+  .top, .foot, .mbar, .filters, .agenda, .print-row, .skip, .band, .page-hero .lead { display: none !important; }
+  .print-only { display: block !important; margin: 0 0 4mm; font-weight: 600; }
+  .page-hero { padding-top: 0; }
+  .page-hero h1 { font-size: 26pt; max-width: none; }
+  .sec-first { padding-top: 4mm; }
+  .schedule .table-wrap { display: block !important; border: 1px solid #000; overflow: visible; }
+  .week { min-width: 0; font-size: 9pt; color: #000; }
+  .week li { opacity: 1 !important; border-left-color: #000 !important; }
+  .week time, .week tbody th { color: #000; }
+}
+
 /* ---------- Legal ---------- */
 .back { padding-top: 32px; margin-top: 0; margin-bottom: 0; }
 .back + .page-hero { padding-top: 20px; }
