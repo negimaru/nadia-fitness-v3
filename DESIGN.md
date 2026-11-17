@@ -28,7 +28,9 @@ A section that does not help that decision does not ship.
 
 - One family: **Bricolage Grotesque** (variable). Headings 650–700, tight tracking (−0.02em). Body 400, 17px/1.6.
 - Body text at most **65ch** (≈480px).
-- Light mode only for v1.
+- Light and dark: follows the OS, with a sun/moon toggle in the header (remembered per browser). Dark tokens:
+  `--bg #171412 · --card #211D1A · --ink #F2EEE8 (15.9:1) · --muted #A8A29E (7.3:1) · --line #36312C · --accent #FF5AA8 (6.4:1) with --on-accent #171412`.
+  Shadows and the map filter are tokens too (`--shadow`, `--map-filter`); never hard-code them.
 - Icons: Lucide, 20px, stroke 2, inline beside the text they label.
 
 ## Bans (fix the spec, not the page, if 3+ of these slip)
