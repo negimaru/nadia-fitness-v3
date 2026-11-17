@@ -7,7 +7,10 @@
    "desc": "Los más pequeños de la academia se inician en el baile jugando: ritmo, coordinación y sus primeras coreografías en grupo.",
    "group": "baile",
    "who": "Para los más pequeños",
-   "desc_long": "Los más pequeños de la academia se inician en el baile jugando: ritmo, coordinación y sus primeras coreografías en grupo."
+   "desc_long": "Los más pequeños de la academia se inician en el baile jugando: ritmo, coordinación y sus primeras coreografías en grupo.",
+   "photo": "clases/dance-baby.webp",
+   "photo_alt": "Clase de Grupo Dance Baby en Nadia Fitness Dance Studio",
+   "placeholder": true
   },
   {
    "c": "dance-intermedio",
@@ -16,7 +19,10 @@
    "desc": "Dos grupos, Intermedio 1 e Intermedio 2, para quien ya tiene base y quiere seguir progresando en técnica y coreografía.",
    "group": "baile",
    "who": "Para quien ya tiene base",
-   "desc_long": "Dos grupos, Intermedio 1 e Intermedio 2, para quien ya tiene base y quiere seguir progresando en técnica y coreografía."
+   "desc_long": "Dos grupos, Intermedio 1 e Intermedio 2, para quien ya tiene base y quiere seguir progresando en técnica y coreografía.",
+   "photo": "clases/dance-intermedio.webp",
+   "photo_alt": "Clase de Grupo Dance Intermedio en Nadia Fitness Dance Studio",
+   "placeholder": true
   },
   {
    "c": "dance-avanzado",
@@ -25,7 +31,10 @@
    "desc": "Coreografías más exigentes para quien ya domina la base y quiere ir un paso más allá.",
    "group": "baile",
    "who": "Nivel avanzado",
-   "desc_long": "Coreografías más exigentes para quien ya domina la base y quiere ir un paso más allá."
+   "desc_long": "Coreografías más exigentes para quien ya domina la base y quiere ir un paso más allá.",
+   "photo": "clases/dance-avanzado.webp",
+   "photo_alt": "Clase de Grupo Dance Avanzado en Nadia Fitness Dance Studio",
+   "placeholder": true
   },
   {
    "c": "wedance-adultos",
@@ -56,7 +65,10 @@
    "desc": "Entrenamiento funcional de alta intensidad por intervalos. Tienes grupo de mañana y de tarde para encajarlo en tu semana.",
    "group": "fitness",
    "who": "Entrenamiento funcional",
-   "desc_long": "Entrenamiento funcional de alta intensidad por intervalos. Tienes grupo de mañana y de tarde para encajarlo en tu semana."
+   "desc_long": "Entrenamiento funcional de alta intensidad por intervalos. Tienes grupo de mañana y de tarde para encajarlo en tu semana.",
+   "photo": "clases/powerhiit.webp",
+   "photo_alt": "Clase de PowerHIIT en Nadia Fitness Dance Studio",
+   "placeholder": true
   },
   {
    "c": "aquafitness",
@@ -65,7 +77,10 @@
    "desc": "Ejercicio en el agua, en piscina exterior: trabajo cardiovascular y de tono muscular con bajo impacto en las articulaciones.",
    "group": "fitness",
    "who": "En piscina exterior",
-   "desc_long": "Ejercicio en el agua, en piscina exterior: trabajo cardiovascular y de tono muscular con bajo impacto en las articulaciones."
+   "desc_long": "Ejercicio en el agua, en piscina exterior: trabajo cardiovascular y de tono muscular con bajo impacto en las articulaciones.",
+   "photo": "clases/aquafitness.webp",
+   "photo_alt": "Clase de Aquafitness en Nadia Fitness Dance Studio",
+   "placeholder": true
   }
  ],
  "sessions": [

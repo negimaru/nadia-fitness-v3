@@ -17,7 +17,7 @@ A section that does not help that decision does not ship.
 
 ## Components
 
-- **Class card**: real photo, or a placeholder with the group icon and the word Baile or Fitness. Never a fake image or a repeat of the class name. Then who it is for (accent), name, description and time chips.
+- **Class card**: real photo, or until it exists a placeholder image `assets/img/clases/<slug>.webp` (made by `tools/make_placeholders.py`: flat dark, group label, one accent line, class name as a poster caption; no gradients or glows). Replacing the file with a real photo of the same name is all it takes. Then who it is for (accent), name, description and time chips.
 - **Week**: a table that works without JS. `schedule.js` adds filter buttons (rectangular, radius 4) and, on mobile, day tabs and a list.
 - **Footer**: logo, Instagram, phone/WhatsApp/address, call hours, pages, legal.
 - **Mobile bar**: "Llamar" (the pill) + "WhatsApp" (rectangular).
