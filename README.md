@@ -29,3 +29,9 @@ assets/js/contact.js    Formulario → WhatsApp
 ```
 
 Comparativa: [web actual](https://negimaru.github.io/nadia-fitness/) · [propuesta v2](https://negimaru.github.io/nadia-fitness-alt/) · propuesta v3.
+
+## Funciones
+
+- **«¿Atendemos llamadas ahora?»** junto al teléfono, calculado a partir del horario de llamadas de `data/site.json`.
+- **Horario imprimible** en un folio A4 apaisado, con el botón «Imprimir horario».
+- **Imagen para compartir el Horario** (`assets/img/og-horario.jpg`): se genera en la v2 con `tools/make_og_horario.py`. Si cambia el horario, hay que regenerarla y copiarla aquí.
