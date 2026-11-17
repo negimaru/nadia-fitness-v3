@@ -108,6 +108,12 @@ ul, ol { margin: 0; padding: 0; list-style: none; }
 
 /* ---------- Class cards: bordered, static grid ---------- */
 .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 20px; }
+/* 7 classes = 4 dance + 3 fitness: two full rows instead of a 4+3 grid with a gap */
+.cards-classes { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+.cards-classes > :nth-child(-n+4) { grid-column: span 3; }
+.cards-classes > :nth-child(n+5) { grid-column: span 4; }
+@media (max-width: 1020px) { .cards-classes > :nth-child(-n+4) { grid-column: span 6; } }
+@media (max-width: 700px) { .cards-classes > * { grid-column: 1 / -1 !important; } }
 .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius-m); overflow: hidden; display: flex; flex-direction: column; scroll-margin-top: 96px; }
 .media { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: 50% 28%; }
 .media-placeholder { object-position: 0% 100%; }

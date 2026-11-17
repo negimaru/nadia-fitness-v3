@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 6, 2
+CSS_V, JS_V = 7, 2
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -275,7 +275,7 @@ def page_home():
 <div class="sec-head"><div><h2 id="clases-h">Siete clases, cada una con su grupo y su horario fijo</h2>
 <p class="intro">Cuatro de baile por niveles y tres de fitness para adultos.</p></div>
 <a class="link" href="clases/">Ver todas las clases{I_ARROW}</a></div>
-<div class="cards">{cards}</div>
+<div class="cards cards-classes">{cards}</div>
 </section>
 
 <section class="sec wrap" aria-labelledby="semana-h">
