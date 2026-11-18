@@ -16,7 +16,7 @@ DATA = json.load(open(os.path.join(ROOT, "data", "site.json"), encoding="utf-8")
 CLASSES = DATA["classes"]
 BY_SLUG = {c["c"]: c for c in CLASSES}
 SESSIONS = DATA["sessions"]
-CSS_V, JS_V = 12, 6
+CSS_V, JS_V = 13, 6
 
 DAYS = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
 SHORT = ["Lun", "Mar", "Mié", "Jue", "Vie"]
@@ -29,6 +29,7 @@ REVIEWS = "https://www.google.com/maps/search/?api=1&amp;query=Nadia%20Fitness%2
 INSTAGRAM = "https://www.instagram.com/nadiafitnessdancestudio/"
 FACEBOOK = "https://www.facebook.com/profile.php?id=61571423443783"
 LIVE = "https://negimaru.github.io/nadia-fitness/"
+SITE = "https://negimaru.github.io/nadia-fitness-v3/"
 ADDRESS_1, ADDRESS_2 = "Urb. Santa Rosa, Calle Margarita 6", "29793 Torrox Costa, Málaga"
 
 e = html.escape
@@ -62,7 +63,29 @@ NAV = [("", "Inicio"), ("clases/", "Clases"), ("horario/", "Horario"), ("quien-s
 
 
 # ---------- Layout ----------
+def json_ld():
+    """LocalBusiness data for Google (address, phone, hours, classes). Built from the same constants and data as the pages."""
+    times = [x["start"].zfill(5) for x in SESSIONS] + [x["end"].zfill(5) for x in SESSIONS]
+    street, (postal, locality) = ADDRESS_1, ADDRESS_2.split(" ", 1)
+    data = {
+        "@context": "https://schema.org", "@type": "SportsActivityLocation", "name": "Nadia Fitness Dance Studio",
+        "description": "Academia de baile y fitness en Torrox Costa: grupos de dance por niveles, Fitdance, PowerHIIT y Aquafitness.",
+        "url": SITE, "telephone": "+34654691336", "image": SITE + "assets/img/og-nadia-fitness.jpg",
+        "address": {"@type": "PostalAddress", "streetAddress": street, "postalCode": postal,
+                    "addressLocality": locality.split(",")[0], "addressRegion": "Málaga", "addressCountry": "ES"},
+        "geo": {"@type": "GeoCoordinates", "latitude": 36.734952643097586, "longitude": -3.973681796403784},
+        "hasMap": MAPS, "areaServed": ["Torrox", "Torrox Costa", "Nerja", "Algarrobo"], "sameAs": [INSTAGRAM, FACEBOOK],
+        "openingHoursSpecification": [{"@type": "OpeningHoursSpecification",
+                                       "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+                                       "opens": min(times), "closes": max(times)}],
+        "makesOffer": [{"@type": "Offer", "itemOffered": {"@type": "Service", "name": c["name"], "description": c["desc"]}} for c in CLASSES],
+    }
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
 def head(p, title, description, path, og="LIVE_OG"):
+    og_img = og if og != "LIVE_OG" else SITE + "assets/img/og-nadia-fitness.jpg"
+    canon = "" if path is None else f'<link rel="canonical" href="{SITE}{path}">\n<meta property="og:url" content="{SITE}{path}">\n'
     return f'''<!doctype html>
 <html lang="es">
 <head>
@@ -74,14 +97,20 @@ def head(p, title, description, path, og="LIVE_OG"):
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#F6F3EE" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#171412" media="(prefers-color-scheme: dark)">
+{canon}<meta property="og:type" content="website">
+<meta property="og:locale" content="es_ES">
+<meta property="og:site_name" content="Nadia Fitness Dance Studio">
 <meta property="og:title" content="{e(title)}">
 <meta property="og:description" content="{e(description)}">
-<meta property="og:image" content="{og if og != 'LIVE_OG' else LIVE + 'assets/img/og-nadia-fitness.jpg'}">
+<meta property="og:image" content="{og_img}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="{p}assets/img/favicon.svg?v=2" type="image/svg+xml">
 <script>try{{var t=localStorage.getItem("nf3-theme");if(t)document.documentElement.setAttribute("data-theme",t)}}catch(e){{}}</script>
 <link rel="preload" href="{p}assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="{p}assets/css/fonts.css?v=1">
 <link rel="stylesheet" href="{p}assets/css/site.css?v={CSS_V}">
+<script type="application/ld+json">{json_ld()}</script>
 </head>
 <body>
 <a class="skip" href="#main">Saltar al contenido</a>
@@ -94,7 +123,7 @@ def header(p, current):
         for href, label in NAV)
     return f'''<header class="top">
 <div class="wrap top-in">
-<a class="logo" href="{p}"><img src="{p}assets/img/logo.png" alt="Nadia Fitness Dance Studio, inicio" width="110" height="60"></a>
+<a class="logo" href="{p}"><img src="{p}assets/img/logo-280.webp" srcset="{p}assets/img/logo-140.webp 140w, {p}assets/img/logo-200.webp 200w, {p}assets/img/logo-280.webp 280w, {p}assets/img/logo-340.webp 340w, {p}assets/img/logo-400.webp 400w" sizes="73px" alt="Nadia Fitness Dance Studio, inicio" width="110" height="60"></a>
 <nav class="nav" aria-label="Principal">
 <button class="menu" type="button" aria-expanded="false" aria-controls="menu" aria-label="Abrir menú">{I_MENU}</button>
 <ul id="menu">{links}</ul>
@@ -113,7 +142,7 @@ def footer(p, scripts=()):
     return f'''<footer class="foot">
 <div class="wrap foot-grid">
 <div class="foot-brand">
-<a class="logo" href="{p}"><img src="{p}assets/img/logo.png" alt="Nadia Fitness Dance Studio, inicio" width="110" height="60" loading="lazy"></a>
+<a class="logo" href="{p}"><img src="{p}assets/img/logo-280.webp" srcset="{p}assets/img/logo-140.webp 140w, {p}assets/img/logo-200.webp 200w, {p}assets/img/logo-280.webp 280w, {p}assets/img/logo-340.webp 340w, {p}assets/img/logo-400.webp 400w" sizes="73px" alt="Nadia Fitness Dance Studio, inicio" width="110" height="60" loading="lazy"></a>
 <p>Academia de baile y fitness en Torrox Costa.</p>
 <a class="foot-social" href="{INSTAGRAM}" rel="noopener">{I_INSTA}@nadiafitnessdancestudio</a>
 </div>
@@ -276,7 +305,7 @@ def page_home():
 <div class="actions"><a class="btn-primary" href="{PHONE_HREF}">{I_PHONE}Llamar al {PHONE}</a><a class="link" href="horario/">Ver el horario de la semana{I_ARROW}</a></div>
 </div>
 <figure class="hero-photo">
-<img src="assets/img/monitora-fitdance.webp" srcset="assets/img/monitora-fitdance-480.webp 480w, assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="Nadia, monitora del estudio, con micrófono antes de una clase" width="840" height="840" fetchpriority="high">
+<img src="assets/img/monitora-fitdance.webp" srcset="assets/img/monitora-fitdance-480.webp 480w, srcset="assets/img/monitora-fitdance-640.webp 640w, assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="Nadia, monitora del estudio, con micrófono antes de una clase" width="840" height="840" fetchpriority="high">
 <figcaption class="caption"><span><b>Nadia</b> · monitora del estudio</span>{rating()}</figcaption>
 </figure>
 </section>
@@ -298,7 +327,7 @@ def page_home():
 
 <section class="sec wrap" aria-labelledby="nadia-h">
 <div class="teaser">
-<img class="avatar" src="assets/img/monitora-fitdance.webp" srcset="assets/img/monitora-fitdance-480.webp 480w, assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="" width="840" height="840" loading="lazy">
+<img class="avatar" src="assets/img/monitora-fitdance.webp" srcset="assets/img/monitora-fitdance-480.webp 480w, srcset="assets/img/monitora-fitdance-640.webp 640w, assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="" width="840" height="840" loading="lazy">
 <div><h2 id="nadia-h">Nadia, monitora del estudio</h2>
 <p class="intro">Da clase a todos los grupos: dance por niveles, Fitdance, PowerHIIT y Aquafitness.</p>
 {rating()}</div>
@@ -367,7 +396,7 @@ def page_about():
 <p class="lead">En mis clases cada persona avanza a su ritmo: técnica, coreografía y entrenamiento en serio, en buen ambiente. Si nunca has bailado, te ayudo a encontrar tu grupo.</p>
 <div class="actions">{rating()}</div>
 </div>
-<figure class="hero-photo"><img src="{p}assets/img/monitora-fitdance.webp" srcset="{p}assets/img/monitora-fitdance-480.webp 480w, {p}assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="Nadia con micrófono antes de una clase" width="840" height="840" fetchpriority="high"></figure>
+<figure class="hero-photo"><img src="{p}assets/img/monitora-fitdance.webp" srcset="{p}assets/img/monitora-fitdance-480.webp 480w, srcset="{p}assets/img/monitora-fitdance-640.webp 640w, {p}assets/img/monitora-fitdance.webp 840w" sizes="(max-width: 860px) 100vw, 50vw" alt="Nadia con micrófono antes de una clase" width="840" height="840" fetchpriority="high"></figure>
 </section>
 <figure class="wrap banner"><img src="{p}assets/img/clase-aire-libre-2.webp" srcset="{p}assets/img/clase-aire-libre-2-800.webp 800w, {p}assets/img/clase-aire-libre-2.webp 1600w" sizes="(max-width: 860px) 100vw, 50vw" alt="Tres monitoras de espaldas, en plena coreografía, dirigen una clase de baile al aire libre junto al mar" width="1600" height="478" loading="lazy"></figure>
 <section class="sec wrap" aria-labelledby="mis-h">
@@ -432,7 +461,7 @@ def page_legal(slug):
 
 def page_404():
     p = "./"
-    return head("", "Página no encontrada · Nadia Fitness Dance Studio", "Esta página no existe.", "").replace(
+    return head("", "Página no encontrada · Nadia Fitness Dance Studio", "Esta página no existe.", None).replace(
         'href="assets/', 'href="/nadia-fitness-v3/assets/').replace('src="assets/', 'src="/nadia-fitness-v3/assets/') + header("/nadia-fitness-v3/", None) + f'''<main id="main">
 {page_hero("Esta página no existe", "Puede que el enlace esté mal o que la página se haya movido.")}
 <section class="sec sec-first wrap"><div class="two">
@@ -464,3 +493,6 @@ if __name__ == "__main__":
     write("aviso-legal/index.html", page_legal("aviso-legal"))
     write("privacidad/index.html", page_legal("privacidad"))
     write("404.html", page_404())
+    urls = "".join(f"  <url><loc>{SITE}{u}</loc></url>\n" for u in ("", "clases/", "horario/", "quien-soy/", "contacto/"))
+    write("sitemap.xml", f'<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n{urls}</urlset>\n')
+    write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {SITE}sitemap.xml\n")
